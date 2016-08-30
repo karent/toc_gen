@@ -13,12 +13,12 @@ do
       cd ../../../ # This brings you back to the original directory
       
     elif [ -e *ontent*tm* ]; then # Look to content file within xhtml dir
-      cd [xX]*
-      sed -e's/epub:type/id/g' *ontent*tm* | sed -e 's/<a[^<>]*>//g' | sed -e 's/<\/a>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > test.html
-      echo 'cat //*[@id="bodymatter"]' | xmllint --shell test.html > test1.html
+	  sed -e's/epub:type="toc"//g' *ontent*tm* | sed -e's/epub:type/id/g' | sed -e 's/<a[^<>]*>//g' | sed -e 's/<\/a>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > test.html
+	  echo 'cat //*[@id="bodymatter"]' | xmllint --shell test.html > test1.html
       sed '1d; $d' test1.html > test2.html
       xmllint --noent test2.html > test3.html
-      egrep 'tocparttitle|tocsectitle|tocchaptitle' test3.html | sed -e 's/<p[^<>]*>/<p>/g' > $dir.short.html && mv $dir.short.html ../../html
+      sed -e 's/class="tocchaptitle"/id="keep"/g' test3.html > test4.html
+      egrep 'tocparttitle|tocsectitle|tocchaptitle|keep' test4.html | sed -e 's/<p[^<>]*>/<p>/g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.short.html && mv $dir.short.html ../../html
       cd ../../ # This brings you back to the original directory
       
 	elif [ -e [tT][oO][cC]*ml ]; then # Next look at TOC.xhtml
@@ -26,8 +26,8 @@ do
 	  echo 'cat //*[@id="bodymatter"]' | xmllint --shell test.html > test1.html
       sed '1d; $d' test1.html > test2.html
       xmllint --noent test2.html > test3.html
-      sed -e 's/class="tocchaptitle"/id="keep"/g' test3.html > test
-      egrep 'tocparttitle|tocsectitle|tocchaptitle' test3.html | sed -e 's/<p[^<>]*>/<p>/g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.short.html && mv $dir.short.html ../../html
+      sed -e 's/class="tocchaptitle"/id="keep"/g' test3.html > test4.html
+      egrep 'tocparttitle|tocsectitle|tocchaptitle|keep' test4.html | sed -e 's/<p[^<>]*>/<p>/g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.short.html && mv $dir.short.html ../../html
       cd ../../ # This brings you back to the original directory
 
       

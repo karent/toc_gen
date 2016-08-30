@@ -1,0 +1,48 @@
+for dir in 978?????????? # Directories are named by ISBN13
+do
+    cd $dir
+    cd [oO]* 
+    if  [ -e nav*ml ]; then # First look at nav files for TOC
+      sed -e 's/<a[^<>]*>//g' nav*ml | sed -e 's/<\/a>//g' | sed -e 's/<li id="cover">Cover [iI]mage<\/li>//g' | sed -e 's/<li id="title">Title page<\/li>//g' | sed -e 's/<li id="contents">Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' > test.html
+      echo 'cat //*[@id="toc"]' | xmllint --shell test.html > $dir.html
+      sed '1d; $d; /^\s*$/d' $dir.html | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > test.html && xmllint --noent test.html | sed -e 's/<?xml version="1.0"?>//g'  > $dir.html && mv $dir.html ../../html
+      cd ../.. # This brings you back to the original directory
+      
+	elif [ -e [tT][oO][cC]*ml ]; then # Next look at TOC.xhtml
+	  sed -e 's/<a[^<>]*>//g' [tT][oO][cC]*ml | sed -e 's/<\/a>//g' | sed -e 's/<li id="cover">Cover [iI]mage<\/li>//g' | sed -e 's/<li id="title">Title page<\/li>//g' | sed -e 's/<li id="contents">Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' > test.html
+      echo 'cat //*[@id="toc"]' | xmllint --shell test.html > $dir.html
+      sed '1d; $d; /^\s*$/d' $dir.html | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g'  > test.html && xmllint --noent test.html | sed -e 's/<?xml version="1.0"?>//g'  > $dir.html && mv $dir.html ../../html
+      cd ../../ # This brings you back to the original directory
+      
+    elif [ -e 978??????????_[tT][oO][cC]*htm* ]; then # Next look at ISBN_TOC.xhtml
+	  sed -e 's/<a[^<>]*>//g' *[tT][oO][cC]*htm* | sed '/<\?xml/d' | sed '/<!DOCTYPE/d' | sed '/<html/d' | sed '/head>/d' | sed '/<meta/d' | sed '/div>/d' | sed '/<div/d' | sed '/<link/d' | sed '/body>/d' | sed '/html>/d' | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/<\/a>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g'  | sed -e 's/<p[^<>]*>/<p>/' | grep -v '<p>Cover *mage</p>' | grep -v '<p>Title' | grep -v '<p>[cC]opyrigh[^<>]*</p>' | grep -v '<p>Table of Contents</p>' | grep -v '<title>' | grep -v '<h1[^<>]*>' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.html && mv $dir.html ../../html
+      cd ../../ # This brings you back to the original directory
+      
+    elif [ -e S0749069012000171.htm ]; then # Next look at randomly named toc file
+	  sed -e 's/<a[^<>]*>//g' S0749069012000171.htm | sed '/<\?xml/d'| sed '/<!DOCTYPE/d' | sed '/<html/d' | sed '/head>/d' | sed '/<meta/d' | sed '/div>/d' | sed '/<div/d' | sed '/<link/d' | sed '/body>/d' | sed '/html>/d' | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/<\/a>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g'  | sed -e 's/<p[^<>]*>/<p>/' | grep -v '<p>Cover [iI]mage</p>' | grep -v '<p>Title' | grep -v '<p>[cC]opyrigh[^<>]*</p>' | grep -v '<p>Table of Contents</p>' | grep -v '<title>' | grep -v '<h1[^<>]*>' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.html && mv $dir.html ../../html
+      cd ../.. # This brings you back to the original directory 
+ 
+    elif [ -e [xX]*/*nav*ml ]; then # Look within the xhtml directory for nav file
+      cd [xX]*
+      echo 'cat //*[@id="toc"]' | xmllint --shell nav*htm* > test.html
+      sed -e 's/<a[^<>]*>//g' test.html | sed '1d; $d; /^\s*$/d' | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/<\/a>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g' > test1.html && xmllint --noent test1.html | sed -e 's/<?xml version="1.0"?>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g'  > $dir.html && mv $dir.html ../../../html
+      cd ../../.. # This brings you back to the original directory
+      
+    elif [ -e [xX]*/[tT][oO][cC]*htm* ]; then # Look at TOC within xhtml dir
+      cd [xX]*
+      echo 'cat //*[@id="toc"]' | xmllint --shell *[tT][oO][cC]*htm* > test.html
+      sed -e 's/<a[^<>]*>//g' test.html | sed '1d; $d; /^\s*$/d' | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/<\/a>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g' > test.html && xmllint --noent test.html | sed -e 's/<?xml version="1.0"?>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g'  > $dir.html && mv $dir.html ../../../html
+      cd ../../.. # This brings you back to the original directory
+      
+ 	elif [ -e [xX]*/*ontent*tm* ]; then # Look to content file within xhtml dir
+      cd [xX]*
+      sed -e 's/<a[^<>]*>//g' *ontent*htm* | sed '/<\?xml/d'| sed '/<!DOCTYPE/d' | sed '/<html/d' | sed '/head>/d' | sed '/<meta/d' | sed '/div>/d' | sed '/<div/d' | sed '/<link/d' | sed '/body>/d' | sed '/html>/d' | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/<\/a>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g'  | sed -e 's/<p[^<>]*>/<p>/' | grep -v '<p>Cover [iI]mage</p>' | grep -v '<p>Title' | grep -v '<p>[cC]opyrigh[^<>]*</p>' | grep -v '<p>Table of Contents</p>' | grep -v '<title>' | grep -v '<h1[^<>]*>' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g'  > $dir.html && mv $dir.html ../../../html
+      cd ../../.. # This brings you back to the original directory 
+      
+    elif [ -e [xX]*/*[tT][oO][cC]*htm* ]; then # This needs a different rule - same name as above. For toc files without @ids
+      cd [xX]*
+      sed -e 's/<a[^<>]*>//g' *[tT][oO][cC]*htm* | sed '/<\?xml/d'| sed '/<!DOCTYPE/d' | sed '/<html/d' | sed '/head>/d' | sed '/<meta/d' | sed '/div>/d' | sed '/<div/d' | sed '/<link/d' | sed '/body>/d' | sed '/html>/d' | sed -e 's/<nav[^<>]*>//g' | sed -e 's/<\/nav>//g' | sed -e 's/<\/a>//g' | sed -e 's/ol>/ul>/g' | sed -e 's/<li[^<>]*>/<li>/g' | sed -e 's/<h1[^<>]*>[^<>]*Contents<\/h1>//g' | sed -e 's/<li>Cover [iI]mage<\/li>//g' | sed -e 's/<li>Title page<\/li>//g' | sed -e 's/<li>Table of Contents<\/li>//g' | sed -e 's/<li[^<>]*>[cC]opyrigh[^<>]*<\/li>//g' | sed -e 's/<li>*Contributors<\/li>//g'  | sed -e 's/<p[^<>]*>/<p>/' | grep -v '<p>Cover [iI]mage</p>' | grep -v '<p>Title' | grep -v '<p>[cC]opyrigh[^<>]*</p>' | grep -v '<p>Table of Contents</p>' | grep -v '<title>' | grep -v '<h1[^<>]*>' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.html && mv $dir.html ../../../html
+      cd ../../.. # This brings you back to the original directory 
+    fi
+done
+
