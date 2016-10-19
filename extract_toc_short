@@ -30,19 +30,20 @@ do
       egrep 'tocparttitle|tocsectitle|tocchaptitle|keep' test4.html | sed -e 's/<p[^<>]*>/<p>/g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.short.html && mv $dir.short.html ../../html
       cd ../../ # This brings you back to the original directory
 
-      
     elif [ -e [xX]*/[tT][oO][cC]*htm* ]; then # Look at TOC within xhtml dir
       cd [xX]*
 	  sed -e's/epub:type/id/g' [tT][oO][cC]*ml | sed -e 's/<a[^<>]*>//g' | sed -e 's/<\/a>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > test.html
-	  egrep 'tocparttitle|tocsectitle|tocchaptitle' test.html > test123.html
+	  xmllint --noent test.html > test1.html
+	  egrep 'tocparttitle|tocsectitle|tocchaptitle' test1.html > test123.html
 	  sed -e 's/<p[^<>]*>Cover [iI]mage<\/p>//g' test123.html | sed -e 's/<p[^<>]*>Title page<\/p>//g' | sed -e 's/<p[^<>]*>Table of Contents<\/p>//g' | sed -e 's/<p[^<>]*>[cC]opyrigh[^<>]*<\/p>//g' > $dir.short.html && mv $dir.short.html ../../../html
       cd ../../../ # This brings you back to the original directory
       
     elif [ -e [xX]*/*[tT][oO][cC]*htm* ]; then # Look at TOC within xhtml dir
       cd [xX]*
 	  sed -e's/epub:type/id/g' *[tT][oO][cC]*tm* | sed -e 's/<a[^<>]*>//g' | sed -e 's/<\/a>//g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > test.html
-	  egrep 'tocparttitle|tocsectitle|tocchaptitle' test.html > test123.html
-	  sed -e 's/<p[^<>]*>Cover [iI]mage<\/p>//g' test123.html | sed -e 's/<p[^<>]*>Title page<\/p>//g' | sed -e 's/<p[^<>]*>Table of Contents<\/p>//g' | sed -e 's/<p[^<>]*>[cC]opyrigh[^<>]*<\/p>//g' > $dir.short.html && mv $dir.short.html ../../../html
+	  xmllint --noent test.html > test1.html
+	  egrep 'tocparttitle|tocsectitle|tocchaptitle' test1.html > test123.html 
+	  sed -e 's/<p[^<>]*>Cover [iI]mage<\/p>//g' test123.html | sed -e 's/<p[^<>]*>Title page<\/p>//g' | sed -e 's/<p[^<>]*>Table of Contents<\/p>//g' | sed -e 's/<p[^<>]*>[cC]opyrigh[^<>]*<\/p>//g' | sed -e 's/<p[^<>]*>/<p>/g' | sed -e 's/<span[^<>]*>//g' | sed -e 's/<\/span>//g' > $dir.short.html && mv $dir.short.html ../../../html
       cd ../../../ # This brings you back to the original directory
       
     elif [ -e *[tT][oO][cC]*tm* ]; then # Next look at TOC.xhtml
